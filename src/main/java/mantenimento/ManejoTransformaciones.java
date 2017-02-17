@@ -5,13 +5,32 @@
  */
 package mantenimento;
 
+import com.google.gson.Gson;
+import static java.nio.file.Paths.get;
+import mantenimento.encapsulacion.Estudiante;
+
 /**
  *
  * @author Clariza
  */
 class ManejoTransformaciones {
 
-    public ManejoTransformaciones() {
+   public void ejemploTransformaciones(){
+
+        get("/estudianteJsonSimple/", (request, response) -> {
+            return new Estudiante(19810151, "Clariza", "Rosario", "809-851-1234");
+        });
+
+        get("/estudianteJson/", (request, response) -> {
+            return new Estudiante(19810151, "Clariza", "Rosario", "809-851-1234");
+        }, new JsonTransformer());
+
+        get("/estudianteJsonAceptado/", "application/json", (request, response) -> {
+            return new Estudiante(19810151, "Clariza", "Rosario", "809-851-1234");
+        }, new JsonTransformer());
+
+        Gson gson = new Gson();
+        get("/estudianteJsonDirecto", (request, response) -> new Estudiante(19810151, "Clariza", "Rosario", "809-851-1234"), gson::toJson);
+
     }
-    
 }
